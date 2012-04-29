@@ -34,16 +34,17 @@ execute "apt-get update" do
 end
 
 # 1st run apt-get update
-# execute "apt-get-first" do
-#   command "apt-get update"
-#   not_if do
-#     File.exists?('/var/lib/apt/periodic/update-success-stamp')
-#   end
-# end
+execute "apt-get-first" do
+  command 'echo'
+  notifies :run, "execute[apt-get update]", :immediately
+  not_if do
+    File.exists?('/var/lib/apt/periodic/update-success-stamp')
+  end
+end
 
 # provides /var/lib/apt/periodic/update-success-stamp on apt-get update
 package "update-notifier-common" do
-  notifies :run, "execute[apt-get update]", :immediately
+  notifies :run, "execute[apt-get-update]", :immediately
 end
 
 execute "apt-get-update-periodic" do
