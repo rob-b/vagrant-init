@@ -35,10 +35,26 @@ include_recipe 'dotfiles'
 include_recipe 'git'
 include_recipe 'htop'
 include_recipe 'lsof'
+include_recipe 'openssl'
 include_recipe 'mercurial'
+include_recipe 'postgresql::server'
 include_recipe 'python'
 include_recipe 'tmux'
 include_recipe 'tree'
 # include_recipe 'rbenv'
 include_recipe 'vim'
 include_recipe 'zsh'
+
+
+connection_info = {:host => "127.0.0.1", :port => 5432, :username => 'postgres', :password => node['postgresql']['password']['postgres']}
+postgresql_database 'tapir' do
+  connection connection_info
+  action :create
+end
+
+postgresql_database_user 'tapir' do
+  connection connection_info
+  password connection_info[:password]
+  database_name 'tapir'
+  action :create
+end
