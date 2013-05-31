@@ -1,0 +1,22 @@
+---
+
+- name: apt-get update
+  apt: update_cache=yes
+
+- name: Install essentials
+  apt: pkg=$item state=latest install_recommends=no
+  with_items:
+    - git
+    - vim
+    - python-pip
+    - python-dev
+    - htop
+    - build-essential
+
+- include: users.yml
+
+- name: setup authorized_key
+  action: authorized_key user=$user key='$FILE(ssh_key.pub)'
+
+- name: Update sudoers
+  action: template src=templates/sudoers.j2 dest=/etc/sudoers.d/custom owner=root group=root mode=0400

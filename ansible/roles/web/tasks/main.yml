@@ -1,0 +1,11 @@
+- name: Install nginx
+  apt: pkg=nginx state=latest
+
+- name: Install virtualenv
+  pip: name=$item state=latest extra_args='--download-cache=${home}/.pip-cache' state=present use_mirrors=no
+  with_items:
+    - virtualenv
+    - virtualenvwrapper
+
+- name: Create /srv/podium
+  file: path=$config_path state=directory

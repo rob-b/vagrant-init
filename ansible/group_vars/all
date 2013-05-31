@@ -1,0 +1,13 @@
+---
+user: ubuntu
+group: admin
+home: /home/ubuntu
+
+project_name: podium
+nginx_cache_name: podium-cache
+uwsgi_upstream: podium
+config_path: /srv/podium
+
+database_name: podium
+
+initial_user: ubuntu
