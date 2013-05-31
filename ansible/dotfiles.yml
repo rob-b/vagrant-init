@@ -1,12 +1,14 @@
 ---
 - hosts: webservers
   connection: ssh
-  sudo: yes
-  roles:
-    - common
+  user: '{{ user }}'
   tasks:
+    - name: DEBUG
+      debug: msg="User is $user and initial user is $initial_user"
+
     - name: Set correct permisssions
       file: path=$home recurse=yes owner=$user group=$group state=directory
+      sudo: yes
 
 - hosts: webservers
   connection: ssh

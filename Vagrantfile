@@ -1,23 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant::Config.run do |config|
-  config.vm.box = "base"
-
-  config.vm.network :hostonly, "33.33.33.10"
-  config.vm.forward_port 80, 8080
-  config.vm.forward_port 8000, 8001
-  config.vm.share_folder("v-root", "/vagrant", File.dirname(Dir.pwd), :nfs => true)
-
-  config.vm.provision :chef_solo do |chef|
-    chef.add_recipe('vagrant_main')
-
-    chef.json.merge!({
-      :dotfiles => {
-        :repository => "https://bitbucket.org/rob_b/dotfiles.git",
-        :enable_submodules => false,
-        :shell => '/bin/zsh'
-      }
-    })
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu-precise64"
+  config.vm.box_url = "http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-vagrant-amd64-disk1.box"
+  config.vm.hostname = 'adaptivelab'
+  config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 6543, host: 6543
+  config.vm.network :private_network, ip: "192.168.33.10"
+  config.vm.synced_folder "../../adaptivelab", "/vagrant"
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "ansible/vagrant.yml"
+    ansible.inventory_file = "ansible/hosts"
+    ansible.verbose = true
   end
 end

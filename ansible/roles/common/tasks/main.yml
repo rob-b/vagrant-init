@@ -12,6 +12,7 @@
     - python-dev
     - htop
     - build-essential
+    - zsh
 
 - include: users.yml
 
@@ -19,4 +20,4 @@
   action: authorized_key user=$user key='$FILE(ssh_key.pub)'
 
 - name: Update sudoers
-  action: template src=templates/sudoers.j2 dest=/etc/sudoers.d/custom owner=root group=root mode=0400
+  action: template src=templates/sudoers.j2 dest=/etc/sudoers.d/custom owner=root group=root mode=0440
