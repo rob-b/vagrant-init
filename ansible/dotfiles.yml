@@ -15,7 +15,7 @@
   user: '{{ user }}'
   tasks:
     - name: Clone dotfiles
-      git: repo=https://rob_b@bitbucket.org/rob_b/dotfiles.git dest=${home}/.dotfiles
+      git: repo=https://rob_b@bitbucket.org/rob_b/dotfiles.git dest=${home}/.dotfiles update=yes force=no
 
     - name: Install dotfiles
       command: ${home}/.dotfiles/install-links.sh creates=${home}/.config/python/pythonrc.py
